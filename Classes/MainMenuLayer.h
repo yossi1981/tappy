@@ -1,5 +1,5 @@
 #ifndef __MAINMENU_LAYER_H__
-#define __MAINMENY_LAYER_H__
+#define __MAINMENU_LAYER_H__
 
 #include "cocos2d.h"
 
@@ -11,4 +11,6 @@ public:
     void menuCloseCallback(cocos2d::Ref* pSender);
     CREATE_FUNC(MainMenuLayer);
 };
+
+
 #endif

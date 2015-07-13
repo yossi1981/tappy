@@ -67,6 +67,7 @@ bool MainMenuLayer::init()
 }
 
 
+
 void MainMenuLayer::menuCloseCallback(Ref* pSender)
 {
     Director::getInstance()->end();
