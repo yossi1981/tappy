@@ -102,13 +102,13 @@ void GameScene::update(float dt)
 	
 	int miny = origin.y + maxRadius;
 	int maxy = visibleSize.height - maxRadius;
-	
+    
 	auto x = RandomHelper::random_int(minx, maxx);
 	auto y = RandomHelper::random_int(miny, maxy);
 
 	auto rescaleAction = ScaleBy::create(animationTime, scaleFactor);
 
-	auto node = CCSprite::create("CloseNormal.png");
+	auto node = CCSprite::create("CloseSelected.png");
 	node->setPosition(x, y);
 	node->setTag(1);
 
