@@ -18,7 +18,8 @@ private:
 
 	float _colWidth;
 	float _rowWidth;
-
+	
+	cocos2d::Vec2 _gameAreaOffset;
 	/**TODO optimization : change it to a hash or BST*/
 	typedef std::vector<cocos2d::Vec2> PointsCollection_t;
 	typedef unsigned long LocationDim_t;

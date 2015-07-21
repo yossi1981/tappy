@@ -1,9 +1,12 @@
 #include "GameScene.h"
+#include "GameSceneHudLayer.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 
-
 #define BOARD_DIMENSION 10
+#define HUD_LAYER_TAG 1
+
 
 bool GameScene::init()
 {
@@ -11,7 +14,6 @@ bool GameScene::init()
 	{
 		return false;
 	}
-
 
 	_rows = BOARD_DIMENSION;
 	_cols = BOARD_DIMENSION;
@@ -22,6 +24,9 @@ bool GameScene::init()
 	_colWidth = visibleSize.width / _cols;
 	_rowWidth = visibleSize.height / _rows;
 
+	_gameAreaOffset = cocos2d::Vec2(_colWidth / 2.0f, _rowWidth / 2.0);
+	this->setPosition(_gameAreaOffset);
+	
 	for (unsigned x = 0 ; x < _rows ; ++x)
 	{
 		for (unsigned long y = 0 ; y < _cols ; ++y)
@@ -30,6 +35,7 @@ bool GameScene::init()
 		}
 	}
 
+	/* Events handling*/
 	auto listener = EventListenerTouchOneByOne::create();
 
 	listener->onTouchBegan = [](Touch* touch, Event* event){
@@ -40,20 +46,26 @@ bool GameScene::init()
 	};
 
 	listener->onTouchEnded = [=](Touch* touch, Event* event){
+		Vec2 _touchLocationWithOffset = touch->getLocation();
+		_touchLocationWithOffset -= _gameAreaOffset;
+
 		Vector<Node*> nodesToRemove;
 		for (Vector<Node*>::iterator pos = this->getChildren().begin(); 
 			pos != this->getChildren().end(); 
 			++pos) 
 		{
 			Node* node = *pos;
-			if (node->getTag() == 1 && node->getBoundingBox().containsPoint(touch->getLocation()))
+			if (node->getTag() == 1 && node->getBoundingBox().containsPoint(_touchLocationWithOffset))
 			{
 				nodesToRemove.pushBack(node);
-				Label* scoreLabel = ((Label*)this->getChildByTag(10));
-				int score = atoi(scoreLabel->getString().c_str());
-				score++;
-				((Label*)this->getChildByTag(10))->setString(std::to_string(score));
+				((GameSceneHudLayer*)getChildByTag(20))->setScore(20);
+				CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("pop.wav", false, 1.0f, 1.0f, 1.0f);
 			}
+		}
+
+		if (nodesToRemove.empty())
+		{
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("blop.wav", false, 1.0f, 1.0f, 0.5f);
 		}
 
 		for (Vector<Node*>::iterator pos = nodesToRemove.begin();
@@ -76,31 +88,19 @@ bool GameScene::init()
 			m_emitter->setLifeVar(1);
 			this->addChild(m_emitter);
 		}
-
-
-		
 	};
 
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
+	/*HUD*/
+	GameSceneHudLayer* hud = GameSceneHudLayer::create();
+	hud->setTag(20);
+	this->addChild(hud);
+	this->reorderChild(hud, 50);
 
-	auto myMenu = Menu::create();
-	TTFConfig labelConfig;
-	labelConfig.fontFilePath = "fonts/Marker Felt.ttf";
-	labelConfig.fontSize = 48;
-	labelConfig.glyphs = GlyphCollection::DYNAMIC;
-	labelConfig.outlineSize = 2;
-	labelConfig.customGlyphs = nullptr;
-	labelConfig.distanceFieldEnabled = false;
-
-	auto playItem = Label::createWithTTF(labelConfig, "0");
-	playItem->setPosition(Vec2(200, 0));
-	playItem->setTag(10);
-	playItem->setColor(Color3B(255, 255, 0));
-	this->addChild(playItem);
-	
-
+	/*Start the 'update' loop*/
 	this->schedule(schedule_selector(GameScene::update), 0.2f);
+	
 	return true;
 }
 
@@ -124,7 +124,10 @@ void GameScene::update(float dt)
 	node->setPosition(
 		_freeLocation.x * _colWidth,
 		_freeLocation.y * _rowWidth);
-	node->setScale(2.0f);
+	node->setScale(1.6f);
 	node->setTag(1);
+
 	this->addChild(node);
 }
+
+
