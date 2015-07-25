@@ -32,8 +32,6 @@ bool MainMenuScene::init()
 	playItem->setColor(Color3B(255, 255, 0));
 	MenuItems.pushBack(playItem);
 
-
-
 	auto closeItem = MenuItemLabel::create(Label::createWithTTF(labelConfig, "Quit"),
 		[&](Ref* sender){
 		this->quit();

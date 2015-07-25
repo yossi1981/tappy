@@ -1,4 +1,18 @@
 #include "GameSceneHudLayer.h"
+#include <streambuf>
+
+
+#define TAG_SCORE		1
+#define TAG_MULTIPLIER	2
+
+
+template <typename T>
+std::string tappy_to_string(T value)
+{
+    std::ostringstream os ;
+    os << value ;
+    return os.str() ;
+}
 
 USING_NS_CC;
 
@@ -7,6 +21,7 @@ USING_NS_CC;
 GameSceneHudLayer::GameSceneHudLayer()
 {
 	_score = UNDEFINED_SCORE;
+	_multiplier = 1.0f;
 }
 
 GameSceneHudLayer::~GameSceneHudLayer()
@@ -20,28 +35,48 @@ bool GameSceneHudLayer::init()
 		return false;
 	}
 
-	setColor(cocos2d::Color3B(0, 0, 0));
-	setContentSize(cocos2d::Size::Size(1, 1)); //?
-	setAnchorPoint(cocos2d::Vec2(0, 0)); //?
-
-
-	
+	/*font config*/
 	TTFConfig labelConfig;
 	labelConfig.fontFilePath = "fonts/ARCADE.TTF";
-	labelConfig.fontSize = 60;
+	labelConfig.fontSize = 100;
 	labelConfig.glyphs = GlyphCollection::DYNAMIC;
 	labelConfig.outlineSize = 2;
 	labelConfig.customGlyphs = nullptr;
 	labelConfig.distanceFieldEnabled = false;
 
-	auto label = Label::createWithTTF(labelConfig, "0");
-	label->setPosition(Vec2(0, 0));
-	label->setTag(10);
-	label->setColor(Color3B(255, 255, 0));
-	label->setPosition(cocos2d::Vec2(Director::getInstance()->getVisibleSize().width - 100,
+	/*score*/
+	auto scorelabel = Label::createWithTTF(labelConfig, "0");
+	scorelabel->setPosition(Vec2(0, 0));
+	scorelabel->setTag(TAG_SCORE);
+	scorelabel->setColor(Color3B(0, 255, 255));
+	scorelabel->setPosition(cocos2d::Vec2(Director::getInstance()->getVisibleSize().width - 150,
 		Director::getInstance()->getVisibleSize().height-100));
+	this->addChild(scorelabel);
 
-	this->addChild(label);
+	/*multiplier*/
+	auto multiplierLabel = Label::createWithTTF(labelConfig, "0");
+	multiplierLabel->setPosition(Vec2(0, 0));
+	multiplierLabel->setTag(TAG_MULTIPLIER);
+	multiplierLabel->setColor(Color3B(255, 0, 0));
+	multiplierLabel->setPosition(cocos2d::Vec2(Director::getInstance()->getVisibleSize().width - 600,
+		Director::getInstance()->getVisibleSize().height-100));
+	this->addChild(multiplierLabel);
+
+	/*
+	//background
+	
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	auto background = Sprite::create("gameScreenBackground.png");
+	background->setPosition(Vec2(visibleSize.width/2, visibleSize.height/2 ));
+	float scalex = visibleSize.width / background->getContentSize().width;
+	float scaley = visibleSize.height / background->getContentSize().height;
+	background->setScale(scalex,scaley);
+	reorderChild(background,-10);
+
+	addChild(background);*/
+
 
 	UpdateUI();
 
@@ -54,16 +89,22 @@ void GameSceneHudLayer::setScore(unsigned long score)
 	UpdateUI();
 }
 
-void GameSceneHudLayer::UpdateUI()
+void GameSceneHudLayer::setMultiplier(float multiplier)
 {
-	Label* label = (Label*)(getChildByTag(10)); // check whether any other kind of cast is needed
-	if (_score != UNDEFINED_SCORE)
-	{
-		label->setString(std::to_string(_score));
-	}
+	_multiplier = multiplier;
+	UpdateUI();
 }
 
-void GameSceneHudLayer::onDraw(const Mat4& transform, uint32_t flags)
+void GameSceneHudLayer::UpdateUI()
 {
+	/*score*/
+	Label* scorelabel = (Label*)(getChildByTag(TAG_SCORE)); // check whether any other kind of cast is needed
+	if (_score != UNDEFINED_SCORE)
+	{
+		scorelabel->setString(tappy_to_string(_score));
+	}
 
+	/*multiplier*/
+	Label* multiplierlabel = (Label*)(getChildByTag(TAG_MULTIPLIER)); // check whether any other kind of cast is needed
+	multiplierlabel->setString(std::string("x").append(tappy_to_string(_multiplier)));
 }

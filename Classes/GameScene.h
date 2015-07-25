@@ -13,6 +13,10 @@ public:
 private:
 	void update(float dt);
 
+	int _score;
+	float _multiplier;
+	float _totalTimePassed;
+
 	unsigned long _rows;
 	unsigned long _cols;
 

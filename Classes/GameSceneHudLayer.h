@@ -6,15 +6,14 @@ class GameSceneHudLayer : public cocos2d::Layer
 {
 public:
 	CREATE_FUNC(GameSceneHudLayer);
-
 	GameSceneHudLayer();
 	virtual bool init();
 	virtual ~GameSceneHudLayer();
 	void setScore(unsigned long score);
-	virtual void onDraw(const cocos2d::Mat4& transform, uint32_t flags);
-
+	void setMultiplier(float multiploer);
 private:
 	unsigned long _score;
+	float _multiplier;
 	void UpdateUI();
 };
 
