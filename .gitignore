@@ -52,3 +52,5 @@ cocos2d/
 proj.win32/Debug.win32/
 proj.win32/tappy.vcxproj.user
 proj.win32/tappy.opensdf
+proj.win32/tappy.sdf
+proj.win32/tappy.v12.suo
