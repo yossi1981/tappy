@@ -3,11 +3,21 @@
 
 #include "cocos2d.h"
 #include <vector>
+#include <map>
 
 class GameScene : public cocos2d::Scene
 {
 public:
 	virtual bool init();
+
+	void addEventListener();
+
+	void addBackground(cocos2d::Size &visibleSize);
+
+	void createPolygonLayer();
+
+	void createHudLayer();
+
 	CREATE_FUNC(GameScene);
 
 private:
@@ -30,6 +40,14 @@ private:
 
 	PointsCollection_t _occupiedLocations;
 	PointsCollection_t _freeLocations;
+
+	typedef std::map<int, int> BaloonsPerColor;
+	BaloonsPerColor _baloonsPerColor;
+
+
+
+	static cocos2d::TTFConfig createScoreLabelConfig();
+
 };
 
 #endif
