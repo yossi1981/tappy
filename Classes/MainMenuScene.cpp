@@ -13,13 +13,12 @@ bool MainMenuScene::init()
 		return false;
 	}
 
-
 	Vector<MenuItem*> MenuItems;
 
 	auto myMenu = Menu::create();
 	TTFConfig labelConfig;
-	labelConfig.fontFilePath = "fonts/Marker Felt.ttf";
-	labelConfig.fontSize = 48;
+	labelConfig.fontFilePath = "fonts/MainFont.ttf";
+	labelConfig.fontSize = 120;
 	labelConfig.glyphs = GlyphCollection::DYNAMIC;
 	labelConfig.outlineSize = 2;
 	labelConfig.customGlyphs = nullptr;
@@ -54,7 +53,6 @@ void MainMenuScene::quit()
 	exit(0);
 #endif
 }
-
 
 void MainMenuScene::transitionToGameScene()
 {

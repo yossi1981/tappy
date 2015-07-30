@@ -68,6 +68,9 @@
     <ClInclude Include="..\Classes\TappyConfig.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Defs.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
