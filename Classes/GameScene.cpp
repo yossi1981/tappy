@@ -46,7 +46,7 @@ bool GameScene::init()
 	addEventListener();
 	createHudLayer();
 	createPolygonLayer();
-	//addBackground();
+	addBackground();
 	resetColorSequenceState();
 	this->schedule(schedule_selector(GameScene::update), 1.0f);
 	return true;
@@ -336,7 +336,7 @@ void GameScene::addBackground()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto background = Sprite::create("galaxy_1.png");
+	auto background = Sprite::create("GameBackground.jpg");
 	background->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
 	float scalex = visibleSize.width / background->getContentSize().width;
 	float scaley = visibleSize.height / background->getContentSize().height;

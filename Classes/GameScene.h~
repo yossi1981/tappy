@@ -45,6 +45,7 @@ private:
 	void createPolygonLayer();
 	void createHudLayer();
 	void resetColorSequenceState();
+
 	static cocos2d::TTFConfig createScoreLabelConfig();
 };
 
